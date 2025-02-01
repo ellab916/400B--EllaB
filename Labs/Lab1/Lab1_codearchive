@@ -1,0 +1,132 @@
+# Import Modules 
+import numpy as np # import numpy
+import astropy.units as u # import astropy units
+from astropy import constants as const # import astropy constants
+
+# 4.74 * mu * Ro = VLSR + vsun
+def VLSR(Ro, mu=6.379, vsun=12.24*u.km/u.s):
+    """
+    This function will compute the velocity at the
+    local standard of rest. 
+    
+    (Reid and Brunthaler 2004)
+    VLSR = 4.74 * mu * Ro - vsun
+
+    Inputs: 
+     Ro (astropy units kpc)- distance from Sun
+        to the galactic center
+    mu- proper motion of Sag A* (mas/yr) 
+        from Reid and Brunthaler 2004
+    vsun (astropy units km/s)- peculiar motion
+        of the Sun in v-direction
+        from Schonrich+2010
+
+    Outputs: 
+     VLSR (astropy units km/s)- the local standard
+      of rest 
+    """
+    VLSR = 4.74*mu*(Ro/u.kpc)*u.km/u.s - vsun
+    return VLSR
+
+# Different values of the distance to the galactic center 
+Ro_Reid = 8.34 * u.kpc     # Reid + 2014
+Ro_Abuter = 8.178 * u.kpc  # Abuter + 2019
+Ro_Sparke = 7.9 * u.kpc    # Sparke and Gallagher text 
+
+# Compute VLSR using Reid 2014 
+
+VLSR_Reid = VLSR(Ro_Reid)
+print(VLSR_Reid)
+
+# Compute VLSR using Abuter 2019 
+
+VLSR_Abuter = VLSR(Ro_Abuter)
+print(VLSR_Abuter)
+print(np.round(VLSR_Abuter))
+
+# Compute VLSR using Sparke + Gallagher
+
+VLSR_Sparke = VLSR(Ro_Sparke)
+print(VLSR_Sparke)
+
+# orbital period = 2piR/V
+
+def TorbSun(Ro, Vc): 
+    """
+    A function that computes the orbital period of the Sun. 
+    T = 2*pi*R/V
+
+    Inputs: 
+    Ro (float)- the distance to the galactic center from the sun
+    Vc (float)- velocity of the sun in v-direction
+
+    Outputs: 
+    T (astropy)- orbital period (Gyr)
+    """
+    VkpcGyr = Vc.to(u.kpc/u.Gyr)  # converts V to kpc/Gyr
+    T = (np.pi * 2 * Ro)/VkpcGyr  # calculates orbital period
+    return T 
+
+VsunPec = 12.2*u.km/u.s   # peculiar motion
+
+Vsun = VLSR_Abuter + VsunPec   # total motion of sun in v-direction
+
+# Orbital Period of the Sun 
+T_Abuter = TorbSun(Ro_Abuter, Vsun)
+print(np.round(T_Abuter, 3))
+
+Age_Universe = 13.8 * u.Gyr
+print(Age_Universe/T_Abuter)
+
+Grav = const.G.to(u.kpc**3/u.Gyr**2/u.Msun)
+print(Grav)
+
+Grav = const.G.to(u.kpc**3/u.Gyr**2/u.Msun)
+print(Grav)
+
+# Compute the mass enclosed within Ro_Abuter 
+
+mIsoSolar = massIso(Ro_Abuter, VLSR_Abuter)
+print(f"{mIsoSolar:.2e}")
+
+# Compute mass enclosed within 260 kpc 
+
+mIso260 = massIso(260*u.kpc, VLSR_Abuter)
+print(f"{mIso260:.2e}")
+
+# Potential for Hernquist Sphere 
+# Phi = -G*M / (r+a)
+
+# Escape Speed: v_esc^2 = 2*G*M/(r+a)
+
+# rearrange for M 
+# M = v_esc^2 /2/G(r+a)
+
+def massHernVesc(v_esc, r, a = 30*u.kpc): 
+    """
+    This function determines the total dark matter mass needed given an escape speed, 
+    assuming a Hernquist sphere profile. 
+    M = v_esc^2 /2/G(r+a)
+
+
+    Inputs: 
+    v_esc (astropy quantity)- escape speed (km/s)
+    a (astropy quantity)- Hernquist scale length (kpc) 
+       default value of 30 kpc
+    r (astropy quantity)- distance from galactic center (kpc)
+
+    Outputs: 
+    M (astropy quantity)- mass within r (Msun) 
+    """
+    vesckpcGyr = v_esc.to(u.kpc/u.Gyr)  # unit conversion to kpc/Gyr
+    M = vesckpcGyr**2/2/Grav*(r+a)
+    return M
+
+VLeoI = 196*u.km/u.s   # Speed of Leo I satellite galaxy- Sohn 2013
+r = 260*u.kpc
+
+MLeoI = massHernVesc(VLeoI, r)
+print(f"{MLeoI:.2e}")
+
+mIso260/MLeoI
+
