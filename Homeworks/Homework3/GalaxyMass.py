@@ -34,19 +34,20 @@ def ComponentMass(filename, ptype):
     
     return np.round(total_mass, 3)
 
-
+# creates an array of the galaxy text files 
 gals = np.array(["MW_000.txt", "M31_000.txt", "M33_000.txt"])
 
+# loops through the array and gets the halo, disk, and bulge masses
 for gal in gals:
 
     halo = ComponentMass(gal, 1)
     disk = ComponentMass(gal, 2)
     bulge = ComponentMass(gal, 3)
     
+    # prints the component masses and prints the sum 
+    
     print(f"{gal[:3]} Halo Mass: {halo} [1e12 MSun]")
     print(f"{gal[:3]} Disk Mass: {disk} [1e12 MSun]")
     print(f"{gal[:3]} Bulge Mass: {bulge} [1e12 MSun]")
     print(f"{gal[:3]} Total Mass: {halo+disk+bulge} [1e12 MSun]")
     print("---------------")
-
-
