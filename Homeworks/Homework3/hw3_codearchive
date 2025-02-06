@@ -1,0 +1,33 @@
+"""
+Created on Tue Feb  4 16:41:21 2025
+
+author: Ella Butler
+"""
+import numpy as np
+from ReadFile import Read
+
+def ComponentMass(filename, ptype): 
+    """
+    Calculates the total mass of a specified galaxy component.
+    
+    Inputs:
+    filename (str)- The name of the file containing particle data.
+    ptype (int)- The particle type: 1 (Halo), 2 (Disk), 3 (Bulge).
+    
+    Outputs:
+    total_mass (float)- The total mass in units of 10^12 M☉, 
+    rounded to three decimal places.
+    """
+    time, total_particles, data = Read(filename)
+    
+    # Filter particles of the given type
+    particle_mask = data['type'] == ptype
+    
+    # Sum the mass of the selected particles (convert to 10^12 M☉)
+    total_mass = np.sum(data['m'][particle_mask]) / 1e12
+    
+    return np.round(total_mass, 3)
+
+# Code usage:
+# m31_mass_halo = ComponentMass('M31_000.txt', 1)
+# print(m31_mass_halo)
