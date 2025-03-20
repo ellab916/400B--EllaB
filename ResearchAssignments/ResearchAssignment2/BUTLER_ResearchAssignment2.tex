@@ -1,0 +1,152 @@
+% mnras_template.tex 
+%
+% LaTeX template for creating an MNRAS paper
+%
+% v3.3 released April 2024
+% (version numbers match those of mnras.cls)
+%
+% Copyright (C) Royal Astronomical Society 2015
+% Authors:
+% Keith T. Smith (Royal Astronomical Society)
+
+% Change log
+%
+% v3.3 April 2024
+%   Updated \pubyear to print the current year automatically
+% v3.2 July 2023
+%	Updated guidance on use of amssymb package
+% v3.0 May 2015
+%    Renamed to match the new package name
+%    Version number matches mnras.cls
+%    A few minor tweaks to wording
+% v1.0 September 2013
+%    Beta testing only - never publicly released
+%    First version: a simple (ish) template for creating an MNRAS paper
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[fleqn,usenatbib]{mnras}
+
+% MNRAS is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+\usepackage{newtxtext,newtxmath}
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+%\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+
+% Allow "Thomas van Noord" and "Simon de Laguarde" and alike to be sorted by "N" and "L" etc. in the bibliography.
+% Write the name in the bibliography as "\VAN{Noord}{Van}{van} Noord, Thomas"
+\DeclareRobustCommand{\VAN}[3]{#2}
+\let\VANthebibliography\thebibliography
+\def\thebibliography{\DeclareRobustCommand{\VAN}[3]{##3}\VANthebibliography}
+
+
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+
+% Only include extra packages if you really need them. Avoid using amssymb if newtxmath is enabled, as these packages can cause conflicts. newtxmatch covers the same math symbols while producing a consistent Times New Roman font. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+%\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+% Title of the paper, and the short title which is used in the headers.
+% Keep the title short and informative.
+\title{Tails as Old as Time}
+
+% The list of authors, and the short list which is used in the headers.
+% If you need two or more lines of authors, add an extra line using \newauthor
+\author[]{Ella Butler}
+
+
+% These dates will be filled out by the publisher
+\date{March 10, 2025}
+
+% Prints the current year, for the copyright statements etc. To achieve a fixed year, replace the expression with a number. 
+\pubyear{\the\year{}}
+
+% Don't change these lines
+\begin{document}
+\label{firstpage}
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+In developing a better understanding of galaxy mergers and their role in galactic evolution, study of tidal debris and mass loss is essential. When a merger occurs, gravitational interactions exert tidal forces that strip stars, gas, and dark matter from their host systems and creating tidal debris. Tidal debris can contain stellar streams, gas and dust shells, and extended halos that contain galactic ejecta. \cite{Toomre_Toomre_1972} Mass loss refers to the fraction of the galaxy's material that is displaced or removed permanently from the system. Tidal debris and mass loss both affect the structure of galaxies because they redistribute mass, reshape stellar orbits, and influence future star formation. These interactions drive the morphological transformation of galaxies and contribute to their growth. \cite{10.1111/j.1365-2966.2004.07725.x}
+     
+Studying mass loss and tidal debris aids in understanding galaxy evolution because these processes reveal the interaction history between galaxies. Tidal debris serves as a visible record of past mergers, providing astronomers with evidence of past gravitational encounters from billions of years ago. Analyzing the distribution and composition of tidal debris can inform models of how galaxies grow, evolve, and even trigger new star formation. \cite{Mihos_2004}
+Furthermore, understanding mass loss helps refine predictions of galactic dark matter distributions, as dark matter gravitationally influences debris.
+
+Current understanding of mass loss and tidal debris in galaxy evolution has advanced significantly through observational data and simulations. Observations have identified stellar streams and tidal tails in various galaxy systems, confirming that these structures are common results of mergers. \cite{Privon_2013} These findings influence simulations, which model how galaxies interact during encounters. These simulations have revealed that tidal debris can persist for billions of years.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{Screenshot 2025-03-20 at 14.42.30.png}
+    \caption{Evolution of an equal-mass merger, identical to that in Fig. 1, but occurring as the system orbits through a Coma-like cluster potential. Note the rapid stripping of the tidal tails early in the simulation; the tidal debris seen here is more extended and diﬀuse than in the field merger, and late infall is shut oﬀ due to tidal stripping by the cluster potential. (Figure 3, Mihos (2004)
+}
+    \label{fig:enter-label}
+\end{figure}
+
+These models also demonstrate that mass loss contributes to the redistribution of metals, gas dynamics, and the eventual quenching of star formation in some systems. Additionally, observations of globular clusters embedded in tidal streams have provided insight into the distribution of dark matter in galactic halos.
+
+Despite this progress, several open questions remain. The precise mechanisms by which tidal debris reintegrates into surviving galaxies or disperses into intergalactic space are still not fully understood. Determining how different types of galaxies respond to mass loss, especially in varied environments such as galaxy clusters or voids, is an ongoing challenge. Additionally, the role and significance of minor mergers versus major mergers in generating tidal debris patterns remains a topic of debate. Advancing observational techniques and improving simulation accuracy are crucial to addressing these unresolved issues and enhancing the broader understanding of galaxy evolution.
+
+\section{Proposal}
+1. The specific question that will be answered is: What is the evolution of stellar debris in tidal tails and bridges throughout the merger (with a specific focus on density gradients and velocity dispersion)? 
+
+2. This project will focus on disk particles to isolate stellar debris. Dark matter halo and bulge particles will be excluded unless necessary for gravitational context. For each particle, the following properties will be extracted:
+    \begin{itemize}
+        \item Position (x, y, z)
+        \item Velocity (vx, vy, vz)
+        \item Mass
+    \end{itemize}
+Snapshots will be chosen at regular intervals of 5, starting before the galaxies reach pericenter and continuing until the tidal structures have dispersed or merged fully. This ensures a balanced temporal resolution to track debris evolution while keeping computational costs manageable.
+
+To identify tidal structures, a 3D density field will be computed using \verb|scipy.ndimage.gaussian_filter|, which smooths the data and highlights regions with steep density gradients indicative of tidal features. This approach is chosen because Gaussian filtering effectively reduces noise while preserving large-scale structures in the simulation.
+To analyze asymmetry, the center of mass will be calculated for each galaxy, and deviations from symmetry will be measured to trace evolving asymmetries. This is critical for understanding how tidal structures distort and shift during the merger process.
+
+Velocity dispersion will be used to quantify the kinematic state of tidal debris. The equation used is:
+
+\begin{equation}
+    dispersion = \sqrt{\frac{1}{N}\Sigma (v_i-\bar{v})^2}
+\end{equation}
+
+This metric will track changes in particle motion over time.
+
+Particle tracking will employ the leapfrog method based on velocity data:
+\begin{equation}
+    r(t+\Delta t)=r(t)+v(t) \Delta t
+\end{equation}
+
+This method will allow for particles to be traced across multiple snapshots, tracking their movement and dispersion over time.
+
+3. It is hypothesized that stellar debris in tidal tails will display strong density gradients early in the merger, with these gradients becoming more diffuse over time as material disperses. On the other hand, velocity dispersion will initially rise as stellar debris is dynamically excited, followed by a decline as debris either becomes bound to one galaxy or disperses into intergalactic space.
+
+This behavior is anticipated because gravitational perturbations from merging galaxies will initially generate strong tidal forces, producing distinct features that will gradually erode as equilibrium is re-established.
+
+\bibliographystyle{mnras}
+\bibliography{example}
+
+% Don't change these lines
+\bsp	% typesetting comment
+\label{lastpage}
+\end{document}
+
+% End of mnras_template.tex
