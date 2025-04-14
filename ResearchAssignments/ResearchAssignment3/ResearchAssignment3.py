@@ -22,17 +22,12 @@ Author: Ella Butler
     # You can select the indices for those particles and see if those particles 
     # match the tidal tail in position space. 
 	# •	Time evolution: 
-	# •	If you are doing this based on stars that are outside the 
-    # Jacobi Radius.  Once you’ve identified them (e.g. by identifying their 
-    # indices using np.where) the nice thing is that the indices 
-    # are always the same in every subsequent snapshot so you can track the 
-    # evolution of those exact particles by selecting the 
-    # same indices each time. 
 	# •	If you are doing this analysis using the phase diagram, 
     # you can keep making phase diagrams and watch how the outlier stars 
     # evolve in time. You could compute the dispersion of those stars also. 
 
-# Pseudocode for analyzing the evolution of stellar tidal tails during MW/M31 merger
+# Pseudocode for analyzing the evolution of stellar tidal tails 
+# during the MW/M31 merger
 
 # Load necessary libraries
 import numpy as np
@@ -77,6 +72,11 @@ r = np.array([xD,yD,zD]).T # transposed
 v = np.array([vxD,vyD,vzD]).T
 
 
+# Load in simulation data
+def load_simulation_data(snapshot_id):
+    # Placeholder for loading particle data (positions, velocities, masses, etc.)
+    return particle_data 
+
 # Function to plot stellar disk distribution
 def plot_stellar_disk(particle_data):
     # Create a 2D histogram of star positions to visualize tidal tails
@@ -87,21 +87,33 @@ def plot_stellar_disk(particle_data):
     plt.title('Stellar Disk Distribution')
     plt.show()
 
-# Function to identify tidal tails using different methods
-def identify_tidal_tails(particle_data, method="jacobi_radius"):
-    if method == "jacobi_radius":
-        # Compute Jacobi radius for MW and M31
-        tidal_radius = compute_jacobi_radius(particle_data)
-        # Select stars beyond the tidal radius
-        tidal_tail_indices = np.where(particle_data['r'] > tidal_radius)
-    elif method == "phase_diagram":
-        # Construct phase space diagram (V vs R)
-        velocities = particle_data['v']
-        radii = particle_data['r']
-        plot_phase_diagram(velocities, radii)
-        # Identify outliers based on deviation from rotation curve
-        tidal_tail_indices = identify_outlier_stars(velocities, radii)
+# Identify tidal tails using phase diagram method
+def identify_tidal_tails(particle_data):
+    # Construct phase space diagram (V vs R)
+    velocities = particle_data['v']
+    radii = particle_data['r']
+    plot_phase_diagram(velocities, radii)
+    # Identify outliers based on deviation from rotation curve
+    tidal_tail_indices = identify_outlier_stars(velocities, radii)
     return tidal_tail_indices
+
+# Function to plot phase diagram
+def plot_phase_diagram(velocities, radii):
+    plt.scatter(radii, velocities, s=1, alpha=0.5)
+    plt.xlabel('Radius [kpc]')
+    plt.ylabel('Theta')
+    plt.title('Phase Diagram (Theta vs R)')
+    plt.show()
+
+# Function to identify outlier stars from rotation curve
+def identify_outlier_stars(velocities, radii):
+    # Placeholder logic for identifying outliers
+    # For example, stars far from the median velocity at a given radius
+    # You can refine this with statistical or model-based thresholds
+    median_velocity = np.median(velocities)
+    deviation = np.abs(velocities - median_velocity)
+    threshold = np.percentile(deviation, 95)
+    return np.where(deviation > threshold)
 
 # Function to track the time evolution of tidal tails
 def track_tidal_tail_evolution(initial_snapshot, final_snapshot, tidal_tail_indices):
@@ -123,5 +135,5 @@ final_snapshot = 200    # Example final snapshot for evolution study
 particle_data = load_simulation_data(initial_snapshot)
 plot_stellar_disk(particle_data)
 
-tidal_tail_indices = identify_tidal_tails(particle_data, method="jacobi_radius")
+tidal_tail_indices = identify_tidal_tails(particle_data)
 track_tidal_tail_evolution(initial_snapshot, final_snapshot, tidal_tail_indices)
